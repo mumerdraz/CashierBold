@@ -97,6 +97,24 @@ app.post('/cashier/event', verify_signature, (req, res) => {
     });
 });
 
+app.get('/settings', verify_signature, (req, res) => {
+    const settings = handleSettingsPage(req);
+
+    res.send({
+        token: req.token,
+        settings: settings,
+    });
+});
+
+app.post('/settings', verify_signature, (req, res) => {
+    const settings = handleReceiveUserSettings(req);
+
+    res.send({
+        token: req.token,
+        settings: settings,
+    });
+});
+
 app.post('/payment/preauth', verify_signature, (req, res) => {
     if (req.body.payment.value >= 100000) {
         res.send({
@@ -171,6 +189,95 @@ function handleInitializeCheckout(req) {
         },
     ];
 };
+
+function handleSettingsPage(req) {
+    //Missing: Load user values from DB, assign to `value` keys
+
+    return {
+       shortString1: {
+           text: 'This is a short string field',
+           type: 'stringShort',
+           tooltip: 'Short string tooltip',
+           placeholder: 'Short string placeholder',
+           value: '',
+           validation_schema: {},
+        },
+        regularString1: {
+            text: 'This is a regular string field ',
+            type: 'string',
+            tooltip: 'Regular string tooltip',
+            placeholder: 'Regular string placeholder',
+            value: '',
+            validation_schema: {},
+        },
+        number1: {
+            text: 'This is a number field',
+            type: 'number',
+            tooltip: 'number tooltip',
+            placeholder: 'Number placeholder',
+            value: '',
+            validation_schema: {},
+        },
+        checkbox1: {
+            text: 'This is a checkbox',
+            type: 'checkbox',
+            tooltip: 'checkbox tooltip',
+            value: '',
+            validation_schema: {},
+        },
+
+        link1: {
+            text: 'This is a link',
+            type: 'link',
+            value: 'https://www.google.ca',
+            validation_schema: {},
+        },
+        horizontalRule1: {
+            type: 'horizontalRule',
+            validation_schema: {},
+        },
+        header1: {
+            text: 'This is a header',
+            type: 'header',
+            tooltip: 'This is a header tooltip',
+            validation_schema: {},
+        },
+        toggle1: {
+            text: 'This is a toggle',
+            type: 'toggle',
+            tooltip: 'toggle tooltip',
+            value: 1,
+            validation_schema: {},
+        },
+        validationExampleNumber1: {
+            text: 'This is required when the toggle is checked',
+            type: 'number',
+            tooltip: 'Turn off toggle to not require this field',
+            placeholder: 'Number placeholder',
+            value: '',
+            validation_schema: {
+                required_if: {
+                    target: 'toggle1',
+                    errorText: 'Required when toggle is on',
+                },
+                min: {
+                    value: 5,
+                    errorText: 'Must be greater than 5',
+                },
+                max: {
+                    value: 1000,
+                    errorText: 'Must be less than 1000',
+                }
+            },
+        }
+    };
+}
+
+function handleReceiveUserSettings(req) {
+    console.log(req.body);
+
+    //Save user settings to DB
+}
 
 function handleAppHook(req) {
     switch (req.body.properties.hook) {
