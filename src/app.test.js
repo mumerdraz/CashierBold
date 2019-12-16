@@ -57,6 +57,46 @@ describe('app', () => {
         });
     });
 
+    describe('GET /settings', () => {
+        it('responds with status 400 when "token" is missing', () => {
+            return request(app)
+                .get('/settings?platform=shopify&shop=example.myshopify.com')
+                .expect(400);
+        });
+
+        it('responds with success', () => {
+            const token = 'fsdf34543rsdf232f';
+
+            return request(app)
+                .get('/settings?token=' + token)
+                .send()
+                .expect(200)
+                .expect(function(res) {
+                    res.body.token = token;
+                });
+        });
+    });
+
+    describe('POST /settings', () => {
+        it('responds with status 400 when "token" is missing', () => {
+            return request(app)
+                .post('/settings')
+                .send()
+                .expect(400);
+        });
+
+        it('responds with success', () => {
+            const token = 'fsdf34543rsdf232f';
+
+            return request(app)
+                .post('/settings?token=' + token)
+                .expect(200)
+                .expect(function(res) {
+                    res.body.token = token;
+                });
+        });
+    });
+
     describe('GET /oauth/authorize', () => {
         it('responds with status 400 when "code" is missing', () => {
             return request(app)
@@ -230,6 +270,12 @@ describe('app', () => {
                                 position: 'payment_gateway',
                                 text: 'Pay via the honor system',
                                 click_hook: 'add_payment',
+                            },
+                        },
+                        {
+                            type: 'OVERRIDE_SHIPPING',
+                            data: {
+                                url: process.env.APP_URL + '/shipping',
                             },
                         },
                     ],

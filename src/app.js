@@ -1,7 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const request = require('request-promise');
-
 const verify_signature = require('./middleware').verify_signature;
 
 const app = express();
@@ -107,6 +106,25 @@ app.post('/cashier/event', verify_signature, (req, res) => {
 
 app.get('/settings', verify_signature, (req, res) => {
     const settings = handleSettingsPage(req);
+    const token = req.query.token;
+
+    if (typeof token === 'undefined') {
+        res.status(400).send('Error: "token" is required');
+    }
+
+    res.send({
+        token: req.query.token,
+        settings: settings,
+    });
+});
+
+app.post('/settings', verify_signature, (req, res) => {
+    const settings = handleReceiveUserSettings(req);
+    const token = req.query.token;
+
+    if (typeof token === 'undefined') {
+        res.status(400).send('Error: "token" is required');
+    }
 
     res.send({
         token: req.token,
@@ -114,12 +132,19 @@ app.get('/settings', verify_signature, (req, res) => {
     });
 });
 
-app.post('/settings', verify_signature, (req, res) => {
-    const settings = handleReceiveUserSettings(req);
-
+app.post('/shipping', verify_signature, (req, res) => {
     res.send({
-        token: req.token,
-        settings: settings,
+        name: 'My Custom Shipping Override',
+        rates: [
+            {
+                line_text: 'EXTERNAL ECONOMY SHIPPING 5-7 BUSINESS DAYS',
+                value: 11.5,
+            },
+            {
+                line_text: 'EXTERNAL SHIPPING SOURCE OVERNIGHT EXPRESS',
+                value: 15.5,
+            },
+        ],
     });
 });
 
@@ -193,6 +218,12 @@ function handleInitializeCheckout(req) {
                 position: 'payment_gateway',
                 text: 'Pay via the honor system',
                 click_hook: 'add_payment',
+            },
+        },
+        {
+            type: 'OVERRIDE_SHIPPING',
+            data: {
+                url: process.env.APP_URL + '/shipping',
             },
         },
     ];
