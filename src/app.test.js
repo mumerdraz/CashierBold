@@ -68,10 +68,8 @@ describe('app', () => {
             const token = 'fsdf34543rsdf232f';
 
             return request(app)
-                .get('/settings')
-                .send({
-                    token: 'fsdf34543rsdf232f',
-                })
+                .get('/settings?token=' + token)
+                .send()
                 .expect(200)
                 .expect(function(res) {
                     res.body.token = token;
@@ -91,14 +89,33 @@ describe('app', () => {
             const token = 'fsdf34543rsdf232f';
 
             return request(app)
-                .post('/settings')
-                .send({
-                    token: 'fsdf34543rsdf232f',
-                })
+                .post('/settings?token=' + token)
                 .expect(200)
                 .expect(function(res) {
                     res.body.token = token;
                 });
+        });
+    });
+
+    describe('POST /shipping', () => {
+
+        it('responds with success', () => {
+            return request(app)
+              .post('/shipping')
+              .expect(200)
+              .expect({
+                  name: 'My Custom Shipping Override',
+                  rates: [
+                      {
+                          line_text: 'EXTERNAL ECONOMY SHIPPING 5-7 BUSINESS DAYS',
+                          value: 11.5,
+                      },
+                      {
+                          line_text: 'EXTERNAL SHIPPING SOURCE OVERNIGHT EXPRESS',
+                          value: 15.5,
+                      },
+                  ],
+              });
         });
     });
 
