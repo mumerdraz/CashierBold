@@ -36,7 +36,9 @@ app.get('/oauth/redirect', (req, res) => {
         'provide_shipping_rates',
     ].join(' ');
 
-    res.redirect(`https://${domain}/api/v1/${platform}/${shop}/oauth/authorize?client_id=${client_id}&scope=${scope}&response_type=code`);
+    res.redirect(
+        `https://${domain}/api/v1/${platform}/${shop}/oauth/authorize?client_id=${client_id}&scope=${scope}&response_type=code`
+    );
 });
 
 // request expects three different query string parameters,
@@ -48,9 +50,11 @@ app.get('/oauth/authorize', (req, res) => {
     const shop = req.query.shop;
     const code = req.query.code;
 
-    if (typeof code === 'undefined' ||
+    if (
+        typeof code === 'undefined' ||
         typeof platform === 'undefined' ||
-        typeof shop === 'undefined') {
+        typeof shop === 'undefined'
+    ) {
         res.status(400).send('Error: "shop" is required');
     }
 
@@ -66,16 +70,20 @@ app.get('/oauth/authorize', (req, res) => {
         url: `https://${domain}/api/v1/${platform}/${shop}/oauth/access_token`,
         method: 'POST',
         json: requestData,
-    }).then(resp => {
-        //TODO: save access_token in order to perform Cashier API calls
+    })
+        .then(resp => {
+            //TODO: save access_token in order to perform Cashier API calls
 
-        // at this point the app is free to redirect the user wherever it wants
-        // this example redirects back into the Cashier admin
-        res.redirect(`https://${domain}/admin/${platform}/${shop}/marketplace`);
-    }).catch(err => {
-        //TODO: report error
-        res.status(500).end();
-    });
+            // at this point the app is free to redirect the user wherever it wants
+            // this example redirects back into the Cashier admin
+            res.redirect(
+                `https://${domain}/admin/${platform}/${shop}/marketplace`
+            );
+        })
+        .catch(err => {
+            //TODO: report error
+            res.status(500).end();
+        });
 });
 
 app.post('/oauth/uninstalled', verify_signature, (req, res) => {
@@ -152,7 +160,7 @@ function handleEvent(req) {
         default:
             return [];
     }
-};
+}
 
 function handleInitializeCheckout(req) {
     return [
@@ -188,19 +196,19 @@ function handleInitializeCheckout(req) {
             },
         },
     ];
-};
+}
 
 function handleSettingsPage(req) {
     //Missing: Load user values from DB, assign to `value` keys
 
     return {
-       shortString1: {
-           text: 'This is a short string field',
-           type: 'stringShort',
-           tooltip: 'Short string tooltip',
-           placeholder: 'Short string placeholder',
-           value: '',
-           validation_schema: {},
+        shortString1: {
+            text: 'This is a short string field',
+            type: 'stringShort',
+            tooltip: 'Short string tooltip',
+            placeholder: 'Short string placeholder',
+            value: '',
+            validation_schema: {},
         },
         regularString1: {
             text: 'This is a regular string field ',
@@ -267,9 +275,9 @@ function handleSettingsPage(req) {
                 max: {
                     value: 1000,
                     errorText: 'Must be less than 1000',
-                }
+                },
             },
-        }
+        },
     };
 }
 
@@ -296,7 +304,7 @@ function handleAppHook(req) {
                         name: 'my_discount_widget',
                         type: 'app_hook',
                         position: 'discount',
-                        text: 'You\'re welcome',
+                        text: "You're welcome",
                         click_hook: 'already_used',
                         icon: 'https://via.placeholder.com/50x50.png',
                     },
@@ -310,7 +318,7 @@ function handleAppHook(req) {
                         name: 'my_discount_widget',
                         type: 'app_hook',
                         position: 'discount',
-                        text: 'You\'ve already used the discount',
+                        text: "You've already used the discount",
                         click_hook: 'already_used',
                         icon: 'https://via.placeholder.com/50x50.png',
                     },
@@ -331,6 +339,6 @@ function handleAppHook(req) {
         default:
             return [];
     }
-};
+}
 
 module.exports = app;

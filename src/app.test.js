@@ -50,14 +50,19 @@ describe('app', () => {
                     shop: 'example.myshopify.com',
                 })
                 .expect(302)
-                .expect('Location', 'https://cashier.boldcommerce.com/api/v1/shopify/example.myshopify.com/oauth/authorize?client_id=example-client-id&scope=add_payments%20modify_cart%20provide_shipping_rates&response_type=code');
+                .expect(
+                    'Location',
+                    'https://cashier.boldcommerce.com/api/v1/shopify/example.myshopify.com/oauth/authorize?client_id=example-client-id&scope=add_payments%20modify_cart%20provide_shipping_rates&response_type=code'
+                );
         });
     });
 
     describe('GET /oauth/authorize', () => {
         it('responds with status 400 when "code" is missing', () => {
             return request(app)
-                .get('/oauth/authorize?platform=shopify&shop=example.myshopify.com')
+                .get(
+                    '/oauth/authorize?platform=shopify&shop=example.myshopify.com'
+                )
                 .query({
                     platform: 'shopify',
                     shop: 'example.myshopify.com',
@@ -87,12 +92,15 @@ describe('app', () => {
 
         it('responds with status 500 when "invalid_scope" error occurs', () => {
             nock('https://cashier.boldcommerce.com')
-                .post('/api/v1/shopify/example.myshopify.com/oauth/access_token', {
-                    client_id: 'example-client-id',
-                    client_secret: 'example-client-secret',
-                    code: 'example-code',
-                    grant_type: 'authorization_code',
-                })
+                .post(
+                    '/api/v1/shopify/example.myshopify.com/oauth/access_token',
+                    {
+                        client_id: 'example-client-id',
+                        client_secret: 'example-client-secret',
+                        code: 'example-code',
+                        grant_type: 'authorization_code',
+                    }
+                )
                 .reply(400, {
                     error: 'invalid_scope',
                 });
@@ -109,12 +117,15 @@ describe('app', () => {
 
         it('responds with redirect', () => {
             nock('https://cashier.boldcommerce.com')
-                .post('/api/v1/shopify/example.myshopify.com/oauth/access_token', {
-                    client_id: 'example-client-id',
-                    client_secret: 'example-client-secret',
-                    code: 'example-code',
-                    grant_type: 'authorization_code',
-                })
+                .post(
+                    '/api/v1/shopify/example.myshopify.com/oauth/access_token',
+                    {
+                        client_id: 'example-client-id',
+                        client_secret: 'example-client-secret',
+                        code: 'example-code',
+                        grant_type: 'authorization_code',
+                    }
+                )
                 .reply(200, {
                     shop: 'example.myshopify.com',
                     platform: 'shopify',
@@ -131,7 +142,10 @@ describe('app', () => {
                     shop: 'example.myshopify.com',
                 })
                 .expect(302)
-                .expect('Location', 'https://cashier.boldcommerce.com/admin/shopify/example.myshopify.com/marketplace');
+                .expect(
+                    'Location',
+                    'https://cashier.boldcommerce.com/admin/shopify/example.myshopify.com/marketplace'
+                );
         });
     });
 
@@ -248,7 +262,7 @@ describe('app', () => {
                                 name: 'my_discount_widget',
                                 type: 'app_hook',
                                 position: 'discount',
-                                text: 'You\'re welcome',
+                                text: "You're welcome",
                                 click_hook: 'already_used',
                                 icon: 'https://via.placeholder.com/50x50.png',
                             },
@@ -276,7 +290,7 @@ describe('app', () => {
                                 name: 'my_discount_widget',
                                 type: 'app_hook',
                                 position: 'discount',
-                                text: 'You\'ve already used the discount',
+                                text: "You've already used the discount",
                                 click_hook: 'already_used',
                                 icon: 'https://via.placeholder.com/50x50.png',
                             },
