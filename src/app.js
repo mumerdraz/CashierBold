@@ -106,21 +106,21 @@ app.post('/cashier/event', verify_signature, (req, res) => {
 
 app.get('/settings', verify_signature, (req, res) => {
     const settings = handleSettingsPage(req);
-    const token = req.body.token;
+    const token = req.query.token;
 
     if (typeof token === 'undefined') {
         res.status(400).send('Error: "token" is required');
     }
 
     res.send({
-        token: req.token,
+        token: req.query.token,
         settings: settings,
     });
 });
 
 app.post('/settings', verify_signature, (req, res) => {
     const settings = handleReceiveUserSettings(req);
-    const token = req.body.token;
+    const token = req.query.token;
 
     if (typeof token === 'undefined') {
         res.status(400).send('Error: "token" is required');
