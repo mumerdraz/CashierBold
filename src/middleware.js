@@ -12,6 +12,12 @@ const verify_signature = (req, res, next) => {
     }
 };
 
+const log = (req, res, next) => {
+    console.log(req.method, req.url);
+    next();
+};
+
 module.exports = {
+    log,
     verify_signature,
 };
