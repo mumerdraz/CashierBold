@@ -1,11 +1,11 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const request = require('request-promise');
-const verify_signature = require('./middleware').verify_signature;
+const { verify_signature, log } = require('./middleware');
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(log, bodyParser.json());
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
