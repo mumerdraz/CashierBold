@@ -37,6 +37,8 @@ app.get('/oauth/redirect', (req, res) => {
     const scope = [
         'add_payments',
         'modify_cart',
+        'create_orders',
+        'read_shop_settings',
         'provide_shipping_rates',
     ].join(' ');
 
