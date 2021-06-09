@@ -9,6 +9,7 @@ app.use(log, bodyParser.json());
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
+    console.log('hello world');
 });
 
 app.get('/widget', (req, res) => {
