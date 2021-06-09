@@ -10,6 +10,9 @@ app.use(log, bodyParser.json());
 app.get('/', (req, res) => {
     res.send('Hello World!');
     console.log('hello world');
+    let date_ob = new Date();
+    console.log(date_ob);
+    
 });
 
 app.get('/widget', (req, res) => {
