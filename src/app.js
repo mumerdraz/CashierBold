@@ -11,6 +11,7 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
     console.log('hello world');
     let date_ob = new Date();
+     res.send(date_ob);
     console.log(date_ob);
     
 });
