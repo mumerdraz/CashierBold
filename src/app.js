@@ -8,7 +8,7 @@ const app = express();
 app.use(log, bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    //res.send('Hello World!');
     console.log('hello world');
     let date_ob = new Date();
      res.send(date_ob);
