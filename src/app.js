@@ -43,7 +43,7 @@ app.get('/oauth/redirect', (req, res) => {
     ].join(' ');
 
     res.redirect(
-        `https://${domain}/api/v1/${platform}/${shop}/oauth/authorize?client_id=${client_id}&scope=${scope}&response_type=code`
+        'https://${domain}/api/v1/${platform}/${shop}/oauth/authorize?client_id=${client_id}&scope=${scope}&response_type=code'
     );
 });
 
@@ -73,7 +73,7 @@ app.get('/oauth/authorize', (req, res) => {
     };
 
     request({
-        url: `https://${domain}/api/v1/${platform}/${shop}/oauth/access_token`,
+        url: 'https://${domain}/api/v1/${platform}/${shop}/oauth/access_token',
         method: 'POST',
         json: requestData,
     })
@@ -83,7 +83,7 @@ app.get('/oauth/authorize', (req, res) => {
             // at this point the app is free to redirect the user wherever it wants
             // this example redirects back into the Cashier admin
             res.redirect(
-                `https://${domain}/admin/${platform}/${shop}/marketplace`
+                'https://${domain}/admin/${platform}/${shop}/marketplace'
             );
         })
         .catch(err => {
