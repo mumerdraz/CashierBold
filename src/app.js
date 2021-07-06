@@ -15,11 +15,11 @@ app.get('/', (req, res) => {
     console.log(date_ob);*/
     
 });
-
+/*
 app.get('/widget', (req, res) => {
     res.sendFile('views/widget.html', { root: __dirname });
 });
-
+*/
 // request expects two different query string parameters,
 //  platform: e.g. shopify
 //  shop: e.g. example.myshopify.com
@@ -100,7 +100,7 @@ app.post('/oauth/uninstalled', verify_signature, (req, res) => {
 
     res.send();
 });
-
+/*
 app.post('/cashier/event', verify_signature, (req, res) => {
     //res.send(req.body.event);
     const actions = handleEvent(req);
@@ -110,7 +110,8 @@ app.post('/cashier/event', verify_signature, (req, res) => {
         actions: actions,
     });
 });
-
+*/
+/*
 app.get('/settings', verify_signature, (req, res) => {
     const settings = handleSettingsPage(req);
     const token = req.query.token;
@@ -124,7 +125,8 @@ app.get('/settings', verify_signature, (req, res) => {
         settings: settings,
     });
 });
-
+*/
+/*
 app.post('/settings', verify_signature, (req, res) => {
     const settings = handleReceiveUserSettings(req);
     const token = req.query.token;
@@ -154,7 +156,8 @@ app.post('/shipping', verify_signature, (req, res) => {
         ],
     });
 });
-
+*/
+/*
 app.post('/payment/preauth', verify_signature, (req, res) => {
     if (req.body.payment.value >= 100000) {
         res.send({
@@ -182,7 +185,7 @@ app.post('/payment/refund', verify_signature, (req, res) => {
         reference_id: 'payment-12345',
     });
 });
-
+*/
 function handleEvent(req) {
     switch (req.body.event) {
         case 'initialize_checkout':
