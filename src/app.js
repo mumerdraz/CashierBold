@@ -1,25 +1,19 @@
+const bodyParser = require('body-parser');
 const express = require('express');
 const request = require('request-promise');
 const { verify_signature, log } = require('./middleware');
 
 const app = express();
 
-app.use(express.urlencoded({extended: true}));
-app.use(log, express.json()); 
+app.use(log, bodyParser.json());
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
-    console.log('hello world');
-    /*let date_ob = new Date();
-     res.send(date_ob);
-    console.log(date_ob);*/
-    
 });
-/*
+
 app.get('/widget', (req, res) => {
     res.sendFile('views/widget.html', { root: __dirname });
 });
-*/
 
 // request expects two different query string parameters,
 //  platform: e.g. shopify
@@ -38,14 +32,11 @@ app.get('/oauth/redirect', (req, res) => {
     const scope = [
         'add_payments',
         'modify_cart',
-        'create_orders',
-        'read_shop_settings',
         'provide_shipping_rates',
     ].join(' ');
-    console.log(req.query.platform);
-    
+
     res.redirect(
-        'https://${domain}/api/v1/${platform}/${shop}/oauth/authorize?client_id=${client_id}&scope=${scope}&response_type=code'
+        `https://${domain}/api/v1/${platform}/${shop}/oauth/authorize?client_id=${client_id}&scope=${scope}&response_type=code`
     );
 });
 
@@ -57,9 +48,7 @@ app.get('/oauth/authorize', (req, res) => {
     const platform = req.query.platform;
     const shop = req.query.shop;
     const code = req.query.code;
-    console.log(platform);
-    console.log(shop);
-    console.log(code);
+
     if (
         typeof code === 'undefined' ||
         typeof platform === 'undefined' ||
@@ -77,17 +66,17 @@ app.get('/oauth/authorize', (req, res) => {
     };
 
     request({
-        url: 'https://${domain}/api/v1/${platform}/${shop}/oauth/access_token',
+        url: `https://${domain}/api/v1/${platform}/${shop}/oauth/access_token`,
         method: 'POST',
         json: requestData,
     })
         .then(resp => {
             //TODO: save access_token in order to perform Cashier API calls
-        console.log(resp.access_Token);
+            console.log(resp.access_Token);
             // at this point the app is free to redirect the user wherever it wants
             // this example redirects back into the Cashier admin
             res.redirect(
-                'https://${domain}/admin/${platform}/${shop}/marketplace'
+                `https://${domain}/admin/${platform}/${shop}/marketplace`
             );
         })
         .catch(err => {
