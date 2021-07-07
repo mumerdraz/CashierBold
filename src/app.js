@@ -72,7 +72,7 @@ app.get('/oauth/authorize', (req, res) => {
     })
         .then(resp => {
             //TODO: save access_token in order to perform Cashier API calls
-            console.log(resp.access_Token);
+           console.log(resp.access_token); 
             // at this point the app is free to redirect the user wherever it wants
             // this example redirects back into the Cashier admin
             res.redirect(
