@@ -56,7 +56,9 @@ app.get('/oauth/authorize', (req, res) => {
     const platform = req.query.platform;
     const shop = req.query.shop;
     const code = req.query.code;
-
+    console.log(platform);
+    console.log(shop);
+    console.log(code);
     if (
         typeof code === 'undefined' ||
         typeof platform === 'undefined' ||
