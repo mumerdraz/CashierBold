@@ -10,10 +10,11 @@ app.use(log, bodyParser.json());
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
-
+/*
 app.get('/widget', (req, res) => {
     res.sendFile('views/widget.html', { root: __dirname });
 });
+*/
 
 // request expects two different query string parameters,
 //  platform: e.g. shopify
@@ -93,7 +94,7 @@ app.post('/oauth/uninstalled', verify_signature, (req, res) => {
 
     res.send();
 });
-
+/*
 app.post('/cashier/event', verify_signature, (req, res) => {
     //res.send(req.body.event);
     const actions = handleEvent(req);
@@ -175,7 +176,7 @@ app.post('/payment/refund', verify_signature, (req, res) => {
         reference_id: 'payment-12345',
     });
 });
-
+*/
 function handleEvent(req) {
     switch (req.body.event) {
         case 'initialize_checkout':
